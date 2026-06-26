@@ -1,17 +1,10 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import productsData from "../data/products";
 function HomePage() {
-  const [products, setProducts] = useState([]);
-
-useEffect(() => {
-  fetch("http://localhost:5000/api/products")
-    .then((res) => res.json())
-    .then((data) => setProducts(data))
-    .catch((err) => console.log(err));
-}, []);
+const [products] = useState(productsData);
   return (
     <div>
       <Navbar />
@@ -50,9 +43,9 @@ useEffect(() => {
         </h2>
 
        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-  {products.slice(0, 4).map((product) => (
+{products.slice(0, 4).map((product, index) => (
     <div
-      key={product._id}
+      key={index}
       className="border rounded-xl shadow-md p-4 hover:shadow-xl transition"
     >
       <img
@@ -72,12 +65,11 @@ useEffect(() => {
       <p className="text-green-600 font-bold text-xl mt-2">
         Rs. {product.price.toLocaleString()}
       </p>
-
-      <Link to={`/product/${product._id}`}>
+     
         <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
           View Product
         </button>
-      </Link>
+  
     </div>
   ))}
 </div>

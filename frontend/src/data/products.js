@@ -1,0 +1,68 @@
+const products = [
+  {
+    name: "Nike Air Max",
+    price: 12999,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+    description: "Comfortable Nike Air Max shoes.",
+    category: "Shoes",
+    stock: 15,
+  },
+  {
+    name: "iPhone 15 Pro",
+    price: 349999,
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+    description: "Latest Apple smartphone.",
+    category: "Smartphones",
+    stock: 8,
+  },
+  {
+    name: "Gaming Laptop",
+    price: 289999,
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+    description: "High performance gaming laptop.",
+    category: "Laptops",
+    stock: 5,
+  },
+  {
+    name: "Wireless Headphones",
+    price: 24999,
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600",
+    description: "Premium wireless headphones.",
+    category: "Audio",
+    stock: 20,
+  },
+  {
+    name: "Smart Watch",
+    price: 18999,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
+    description: "Fitness and health tracking smartwatch.",
+    category: "Wearables",
+    stock: 18,
+  },
+  {
+    name: "Bluetooth Speaker",
+    price: 9999,
+    image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600",
+    description: "Portable Bluetooth speaker.",
+    category: "Audio",
+    stock: 25,
+  },
+  {
+    name: "DSLR Camera",
+    price: 119999,
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600",
+    description: "Professional DSLR camera.",
+    category: "Camera",
+    stock: 6,
+  },
+  {
+    name: "Mechanical Keyboard",
+    price: 14999,
+    image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600",
+    description: "RGB mechanical keyboard.",
+    category: "Accessories",
+    stock: 30,
+  },
+];
+
+export default products;
