@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 function HomePage() {
+  const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:5000/api/products")
+    .then((res) => res.json())
+    .then((data) => setProducts(data))
+    .catch((err) => console.log(err));
+}, []);
   return (
     <div>
       <Navbar />
@@ -40,117 +49,38 @@ function HomePage() {
           Featured Products
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+  {products.slice(0, 4).map((product) => (
+    <div
+      key={product._id}
+      className="border rounded-xl shadow-md p-4 hover:shadow-xl transition"
+    >
+      <img
+        src={product.image}
+        alt={product.name}
+        className="w-full h-56 object-cover rounded-lg"
+      />
 
-          {/* Product 1 */}
-          <div className="border rounded-xl shadow-md p-4 hover:shadow-xl transition">
-            <img
-              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"
-              alt="Headphones"
-              className="w-full h-56 object-cover rounded-lg"
-            />
+      <h3 className="font-bold text-lg mt-4">
+        {product.name}
+      </h3>
 
-            <h3 className="font-bold text-lg mt-4">
-              Wireless Headphones
-            </h3>
+      <p className="text-yellow-500 mt-2">
+        ⭐⭐⭐⭐⭐
+      </p>
 
-            <p className="text-yellow-500 mt-2">
-              ⭐ 4.5 (328 Reviews)
-            </p>
+      <p className="text-green-600 font-bold text-xl mt-2">
+        Rs. {product.price.toLocaleString()}
+      </p>
 
-            <p className="text-green-600 font-bold text-xl mt-2">
-              Rs. 24,999
-            </p>
-
-            <Link to="/product/4">
-              <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-                View Product
-              </button>
-            </Link>
-          </div>
-
-          {/* Product 2 */}
-          <div className="border rounded-xl shadow-md p-4 hover:shadow-xl transition">
-            <img
-              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"
-              alt="Smart Watch"
-              className="w-full h-56 object-cover rounded-lg"
-            />
-
-            <h3 className="font-bold text-lg mt-4">
-              Smart Watch
-            </h3>
-
-            <p className="text-yellow-500 mt-2">
-              ⭐ 4.8 (512 Reviews)
-            </p>
-
-            <p className="text-green-600 font-bold text-xl mt-2">
-              Rs. 18,999
-            </p>
-
-            <Link to="/product/5">
-              <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-                View Product
-              </button>
-            </Link>
-          </div>
-
-          {/* Product 3 */}
-          <div className="border rounded-xl shadow-md p-4 hover:shadow-xl transition">
-            <img
-              src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
-              alt="Nike Air Max"
-              className="w-full h-56 object-cover rounded-lg"
-            />
-
-            <h3 className="font-bold text-lg mt-4">
-              Nike Air Max
-            </h3>
-
-            <p className="text-yellow-500 mt-2">
-              ⭐ 4.7 (245 Reviews)
-            </p>
-
-            <p className="text-green-600 font-bold text-xl mt-2">
-              Rs. 12,999
-            </p>
-
-            <Link to="/product/1">
-              <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-                View Product
-              </button>
-            </Link>
-          </div>
-
-          {/* Product 4 */}
-          <div className="border rounded-xl shadow-md p-4 hover:shadow-xl transition">
-            <img
-              src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
-              alt="iPhone 15 Pro"
-              className="w-full h-56 object-cover rounded-lg"
-            />
-
-            <h3 className="font-bold text-lg mt-4">
-              iPhone 15 Pro
-            </h3>
-
-            <p className="text-yellow-500 mt-2">
-              ⭐ 4.9 (890 Reviews)
-            </p>
-
-            <p className="text-green-600 font-bold text-xl mt-2">
-              Rs. 349,999
-            </p>
-
-            <Link to="/product/2">
-              <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-                View Product
-              </button>
-            </Link>
-          </div>
-
-        </div>
+      <Link to={`/product/${product._id}`}>
+        <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
+          View Product
+        </button>
+      </Link>
+    </div>
+  ))}
+</div>
       </section>
 
       {/* Categories */}

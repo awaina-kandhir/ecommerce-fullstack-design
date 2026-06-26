@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
   return (
-    <Link to={`/product/${product.id}`}>
+    <Link to={`/product/${product._id}`}>
       <div className="bg-white rounded-xl shadow-md p-4 hover:shadow-2xl hover:-translate-y-2 transition duration-300 cursor-pointer">
 
         <img
@@ -20,10 +20,10 @@ function ProductCard({ product }) {
         </p>
 
         <p className="text-green-600 font-bold text-2xl mt-2">
-          Rs. {product.price}
+          Rs. {product.price.toLocaleString()}
         </p>
 
-        <button className="w-full bg-black text-white py-3 rounded-lg mt-4">
+        <button className="w-full bg-black text-white py-3 rounded-lg mt-4 hover:bg-gray-800">
           View Details
         </button>
 
