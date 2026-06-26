@@ -1,3 +1,4 @@
+import userRoutes from "./routes/UserRoutes.js";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -25,6 +26,7 @@ mongoose
 
 // Routes
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // Test Route
 app.get("/", (req, res) => {
