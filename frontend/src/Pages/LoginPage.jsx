@@ -18,27 +18,31 @@ function LoginPage() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = (e) => {
+  e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const data = await res.json();
+  const user = users.find(
+    (u) =>
+      u.email === formData.email &&
+      u.password === formData.password
+  );
 
-    if (res.ok) {
-      login(data);
-      alert("Login Successful!");
-      navigate("/");
-    } else {
-      alert(data.message);
-    }
-  };
+  if (!user) {
+    alert("Invalid email or password");
+    return;
+  }
+
+  // Save logged-in user
+  localStorage.setItem("user", JSON.stringify(user));
+
+  // Update AuthContext
+  login(user);
+
+  alert("Login Successful!");
+  navigate("/");
+};
 
   return (
     <div className="max-w-md mx-auto mt-20 p-6 shadow-lg rounded-lg">

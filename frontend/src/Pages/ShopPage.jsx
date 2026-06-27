@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
@@ -6,9 +6,21 @@ import Footer from "../components/Footer";
 import productsData from "../data/products";
 
 function ShopPage() {
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
 
-  const filteredProducts = productsData.filter(
+  useEffect(() => {
+    const savedProducts = JSON.parse(localStorage.getItem("products"));
+
+    if (savedProducts && savedProducts.length > 0) {
+      setProducts(savedProducts);
+    } else {
+      setProducts(productsData);
+      localStorage.setItem("products", JSON.stringify(productsData));
+    }
+  }, []);
+
+  const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(search.toLowerCase()) ||
       product.category.toLowerCase().includes(search.toLowerCase())

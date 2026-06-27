@@ -12,7 +12,12 @@ function ProductDetailsPage() {
 
   const { addToCart } = useContext(CartContext);
 
-  const product = productsData.find(
+  // Get products from localStorage
+  const products =
+    JSON.parse(localStorage.getItem("products")) || productsData;
+
+  // Find selected product
+  const product = products.find(
     (item) => item.id === Number(id)
   );
 

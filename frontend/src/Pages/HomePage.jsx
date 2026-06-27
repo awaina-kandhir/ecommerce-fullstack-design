@@ -1,10 +1,22 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import productsData from "../data/products";
 function HomePage() {
-const [products] = useState(productsData);
+  
+const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  const savedProducts = JSON.parse(localStorage.getItem("products"));
+
+  if (savedProducts && savedProducts.length > 0) {
+    setProducts(savedProducts);
+  } else {
+    setProducts(productsData);
+    localStorage.setItem("products", JSON.stringify(productsData));
+  }
+}, []);
   return (
     <div>
       <Navbar />

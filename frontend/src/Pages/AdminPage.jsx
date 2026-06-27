@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import productsData from "../data/products";
 
 function AdminPage() {
   const [products, setProducts] = useState([]);
@@ -15,20 +16,24 @@ function AdminPage() {
 
   const [editingId, setEditingId] = useState(null);
 
-  // Fetch all products
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/products");
-      const data = await res.json();
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  // Load products
   useEffect(() => {
-    fetchProducts();
+    const savedProducts = JSON.parse(localStorage.getItem("products"));
+
+    if (savedProducts && savedProducts.length > 0) {
+      setProducts(savedProducts);
+    } else {
+      setProducts(productsData);
+      localStorage.setItem("products", JSON.stringify(productsData));
+    }
   }, []);
+
+  // Save products whenever they change
+  useEffect(() => {
+    if (products.length > 0) {
+      localStorage.setItem("products", JSON.stringify(products));
+    }
+  }, [products]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -41,83 +46,69 @@ function AdminPage() {
   };
 
   // Add or Update Product
-  const handleAddProduct = async (e) => {
+  const handleAddProduct = (e) => {
     e.preventDefault();
 
-    try {
-      const url = editingId
-        ? `http://localhost:5000/api/products/${editingId}`
-        : "http://localhost:5000/api/products";
+    if (editingId) {
+      const updatedProducts = products.map((product) =>
+        product.id === editingId
+          ? {
+              ...newProduct,
+              id: editingId,
+              price: Number(newProduct.price),
+              stock: Number(newProduct.stock),
+            }
+          : product
+      );
 
-      const method = editingId ? "PUT" : "POST";
+      setProducts(updatedProducts);
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newProduct),
-      });
+      alert("Product updated successfully!");
+    } else {
+      const product = {
+        id: Date.now(),
+        ...newProduct,
+        price: Number(newProduct.price),
+        stock: Number(newProduct.stock),
+      };
 
-      const data = await res.json();
+      setProducts([...products, product]);
 
-      if (res.ok) {
-        alert(editingId ? "Product updated successfully!" : "Product added successfully!");
-
-        await fetchProducts();
-
-        setEditingId(null);
-
-        setNewProduct({
-          name: "",
-          price: "",
-          image: "",
-          description: "",
-          category: "",
-          stock: "",
-        });
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong.");
+      alert("Product added successfully!");
     }
+
+    setEditingId(null);
+
+    setNewProduct({
+      name: "",
+      price: "",
+      image: "",
+      description: "",
+      category: "",
+      stock: "",
+    });
   };
 
   // Delete Product
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
     );
 
     if (!confirmDelete) return;
 
-    try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
-        method: "DELETE",
-      });
+    const updatedProducts = products.filter(
+      (product) => product.id !== id
+    );
 
-      const data = await res.json();
+    setProducts(updatedProducts);
 
-      if (res.ok) {
-        alert(data.message);
-
-        setProducts((prev) =>
-          prev.filter((product) => product._id !== id)
-        );
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong.");
-    }
+    alert("Product deleted successfully!");
   };
 
-  // Edit Product
+    // Edit Product
   const handleEdit = (product) => {
-    setEditingId(product._id);
+    setEditingId(product.id);
 
     setNewProduct({
       name: product.name,
@@ -155,6 +146,7 @@ function AdminPage() {
         {/* Product Form */}
         <form onSubmit={handleAddProduct} className="mb-8">
           <div className="grid grid-cols-2 gap-4">
+
             <input
               type="text"
               name="name"
@@ -214,9 +206,11 @@ function AdminPage() {
               className="border p-2 rounded"
               required
             />
+
           </div>
 
           <div className="mt-4 flex gap-3">
+
             <button
               type="submit"
               className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
@@ -233,12 +227,14 @@ function AdminPage() {
                 Cancel
               </button>
             )}
+
           </div>
         </form>
 
         {/* Product Table */}
         <div className="overflow-x-auto">
           <table className="w-full border border-gray-300">
+
             <thead className="bg-gray-100">
               <tr>
                 <th className="border p-3">Name</th>
@@ -250,10 +246,15 @@ function AdminPage() {
             </thead>
 
             <tbody>
+
               {products.length > 0 ? (
+
                 products.map((product) => (
-                  <tr key={product._id}>
-                    <td className="border p-3">{product.name}</td>
+                  <tr key={product.id}>
+
+                    <td className="border p-3">
+                      {product.name}
+                    </td>
 
                     <td className="border p-3">
                       Rs. {Number(product.price).toLocaleString()}
@@ -268,6 +269,7 @@ function AdminPage() {
                     </td>
 
                     <td className="border p-3">
+
                       <button
                         onClick={() => handleEdit(product)}
                         className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
@@ -276,15 +278,19 @@ function AdminPage() {
                       </button>
 
                       <button
-                        onClick={() => handleDelete(product._id)}
+                        onClick={() => handleDelete(product.id)}
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       >
                         Delete
                       </button>
+
                     </td>
+
                   </tr>
                 ))
+
               ) : (
+
                 <tr>
                   <td
                     colSpan="5"
@@ -293,10 +299,14 @@ function AdminPage() {
                     No products found.
                   </td>
                 </tr>
+
               )}
+
             </tbody>
+
           </table>
         </div>
+
       </div>
     </>
   );

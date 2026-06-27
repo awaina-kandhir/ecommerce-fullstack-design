@@ -16,27 +16,29 @@ function RegisterPage() {
       [e.target.name]: e.target.value,
     });
   };
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Get existing users
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const res = await fetch("http://localhost:5000/api/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+  // Check if email already exists
+  const existingUser = users.find(
+    (user) => user.email === formData.email
+  );
 
-    const data = await res.json();
+  if (existingUser) {
+    alert("Email already registered!");
+    return;
+  }
 
-    if (res.ok) {
-      alert("Registration Successful!");
-      navigate("/login");
-    } else {
-      alert(data.message);
-    }
-  };
+  // Save new user
+  users.push(formData);
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registration Successful!");
+  navigate("/login");
+};
 
   return (
     <div className="max-w-md mx-auto mt-20 p-6 shadow-lg rounded-lg">
