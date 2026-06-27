@@ -1,9 +1,10 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { CartContext } from "../context/CartContext";
+import productsData from "../data/products";
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -11,14 +12,9 @@ function ProductDetailsPage() {
 
   const { addToCart } = useContext(CartContext);
 
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => setProduct(data))
-      .catch((err) => console.log(err));
-  }, [id]);
+  const product = productsData.find(
+    (item) => item.id === Number(id)
+  );
 
   if (!product) {
     return (
@@ -26,7 +22,9 @@ function ProductDetailsPage() {
         <Navbar />
 
         <div className="text-center py-20">
-          <h1 className="text-4xl font-bold">Loading...</h1>
+          <h1 className="text-4xl font-bold">
+            Product Not Found
+          </h1>
         </div>
 
         <Footer />

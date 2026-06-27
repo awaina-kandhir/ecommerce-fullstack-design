@@ -20,8 +20,8 @@ function CartProvider({ children }) {
 
   // Remove product
   const removeFromCart = (id) => {
-    setCart(cart.filter((item) => item._id !== id));
-  };
+  setCart(cart.filter((item) => item.id !== id));
+};
 
   // Clear cart
   const clearCart = () => {
