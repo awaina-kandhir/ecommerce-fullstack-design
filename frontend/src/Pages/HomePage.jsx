@@ -43,11 +43,10 @@ const [products] = useState(productsData);
         </h2>
 
        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-{products.slice(0, 4).map((product, index) => (
-    <div
-      key={index}
-      className="border rounded-xl shadow-md p-4 hover:shadow-xl transition"
-    >
+{products.slice(0, 4).map((product) => (
+  <div
+   key={product.id}>
+    
       <img
         src={product.image}
         alt={product.name}
@@ -66,9 +65,11 @@ const [products] = useState(productsData);
         Rs. {product.price.toLocaleString()}
       </p>
      
-        <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-          View Product
-        </button>
+        <Link to={`/product/${product.id}`}>
+  <button className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
+    View Product
+  </button>
+</Link>
   
     </div>
   ))}

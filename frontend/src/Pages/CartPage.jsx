@@ -46,7 +46,7 @@ function CartPage() {
           <>
             {cart.map((item) => (
               <div
-                key={item._id}
+               key={item.id}
                 className="flex items-center justify-between border rounded-lg p-4 mb-4 shadow"
               >
                 <div className="flex items-center gap-4">
@@ -68,7 +68,7 @@ function CartPage() {
                 </div>
 
                 <button
-                  onClick={() => removeFromCart(item._id)}
+                  onClick={() => removeFromCart(item.id)}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                 >
                   Remove
